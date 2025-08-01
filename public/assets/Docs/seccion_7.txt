@@ -1,0 +1,24 @@
+Temas de la sección
+En esta sección tocaremos los siguientes temas:
+
+Problematica de prototipos
+
+Clases
+
+Sets
+
+Gets
+
+Métodos estáticos
+
+Gets estáticos
+
+ESNext: Propiedades privadas (aún no soportado completamente)
+
+Singletons
+
+Multiples constructores
+
+Esta sección es fundamental para la programación moderna de JavaScript, 
+nos servirá mucho en el futuro y recuerden que al final de la sección 
+tienen el código fuente.
