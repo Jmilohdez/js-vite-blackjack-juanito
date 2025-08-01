@@ -1,0 +1,85 @@
+DOM ( Document Object Model ) 
+
+Conjunto de objetos anidados para crear un documento HTML o XML 
+pero la idea del Dom es poder tener acceso dinamico a traves de programacion a sus elementos y poder manipularlos 
+
+querySelector: Me permite recuperar el primer elemento que cumple la condincion que yo le especifico
+
+querySelectorAll: Va a regresar todos los elementos que cumplen la condicion
+
+document.querySelector('img') Selecciona la imagen, o boton que se le especifique 
+
+document.querySelectorAll('img') Esto me regresa un arreglo y me muestra en mi caso 2 objetos que cumplen 
+                                 con la descripcion de imagenes, se esta obteniendo con el tagname
+
+document.querySelector('img').src esta instruccion simple solo me obtiene la primera imagen
+    dando enter regresa la ruta del path donde se encuentra alojado el set de cartas 
+
+    Lo que se hace es copiarlo, quedaria de la siguiente manera
+
+document.querySelector('img').src = 'file:///User/strider/Desktop/Javascript/02-blackjack/assets/cartas/3C.png'
+
+ 
+document.querySelector('small')
+
+document.querySelector('small').innerText = 10 // Este metodo me permite poner directamente texto 
+
+document.querySelector('small').innerHTML = '<b>Hola Mundo</b>' // lo que hace es cambiar todo el contenido 
+                                                            en este caso del small o lo que se le esta 
+                                                            igualando
+
+document.getElementById('computadora-cartas');    //Basicamente este objeto modifica los id del html
+
+
+document.querySelector('#computadora-cartas');  // Con el numeral lo que hace es atrapar el id sino se hace 
+                                                 de esa forma retorna un null
+
+document.querySelector('.carta');   // de esta forma el buscara por clases, pero con el query selector 
+                                    lo unico que hago es atrapar una unica condicion
+
+Otra manera de hacerlo es
+
+document.getElementByClassName('carta');
+
+document.querySelector('header').innerHTML = 'Juan Camilo Hernandez'
+
+*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
+MANIPULACION DEL DOM SEGUNDA PARTE
+*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
+
+Creacion de elementos que no existen en el HTML 
+
+Crear boton
+
+document.createElement('button')      // Especificamos que elemento HTML queremos especificar (div, h1, p, img)
+                                el esta esperando un tagname
+
+divBotones.append( botonNuevo ) de esta forma hacemos que se vea con el append
+
+botonNuevo.innerText = 'Destruir el mundo'   // De esta forma le colocamos el texto
+
+botonNuevo.classList.add('btn-success')   // Aqui le agregamos estilos al boton con bootstrap
+
+const input = document.createElement('input');       && Creamos el input pero todavia no se ve en HTML
+
+document.body.append( input );  && con este se ve el input
+
+input.classList.add('form-control');   && Colocamos estilos 
+
+input.placeholder = 'HOliwi';    && añadimos un place holder
+
+*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
+Evento click de los botones
+*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
+
+lo que se necesita es escuchar cuando se le de clic al boton
+
+1) Hacer una referencia al elemento HTML, que es el boton
+
+btnPedir.addEventListener('click', function () {}  && vienen 2 elementos, el primero es aquel que yo necesito escuchar 
+                                                    puede ser un click o dbclick y el segundo argumento viene es una funcion
+                                                    que actua como un callback, es decir es una funcion que se manda como argumento
+                                                    puede ser una funcion tradicional o una funcion de flecha 
+
+Turno de la computadora
+

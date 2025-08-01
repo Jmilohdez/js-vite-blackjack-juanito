@@ -1,0 +1,191 @@
+Temas puntuales de la sección
+Temas de la sección
+En esta sección tocaremos los siguientes temas:
+
+Patrón módulo
+
+Minimizar el código de forma manual (luego lo haremos de forma automática)
+
+Optimizaciones y protección de código
+
+Esta es una sección que enseña mucho sobre la protección de 
+nuestro código y cómo manipular programas que no usen estos patrones.
+
+
+// 2C Two of Clubs (Treboles)
+// 2D Two of Diamonds (Diamantes)
+// 2H Two of Hearts (Corazones)
+// 2S Two of Spades (Espadas)
+
+// Blackjact: es un juego que tenemos que alcanzar los 21 puntos sin pasarnos, si nos pasamos perdemos
+
+// Sintaxis del patron modulo
+
+(() => {         //Funcion anonima, Si necesito llamar esta funcion despues de ser creada, se pone entre parentesis, luego otros parentesis y punto y coma. es una funcion anonima autoinvocadas
+                        // Lo que hacen es crear un nuevo scoope el cual no tiene una referencia por nombre 
+                        //Por el cual no va a ser posible llamar el objeto directamente
+    'use strict'
+
+        // Creacion del deck de cartas 
+    let deck         = [];
+    const tipos      = ['C','D','H','S'];
+    const especiales = ['A','J','Q','K'];
+
+    let puntosJugador = 0,
+        puntosComputadora = 0;
+
+    // Referencias del HTML
+    const btnPedir   = document.querySelector('#btnPedir');
+    const btnDetener = document.querySelector('#btnDetener');
+    const btnNuevo   = document.querySelector('#btnNuevo');
+
+    const divCartasJugador     = document.querySelector('#jugador-cartas');
+    const divCartasComputadora = document.querySelector('#computadora-cartas');
+
+    const puntosHTML = document.querySelectorAll('small');
+
+
+    // Esat funcion crea un nuevo deck 
+    const crearDeck = () => {
+
+        for( let i = 2; i <= 10; i++ ) {
+            for( let tipo of tipos ) {
+                deck.push( i + tipo);
+            }
+        }
+
+        for( let tipo of tipos ) {
+            for( let esp of especiales ) {
+                deck.push( esp + tipo);
+            }
+        }
+
+        // console.log( deck );
+        deck = _.shuffle( deck );
+        return deck;
+    }
+
+    crearDeck();
+
+    // Esta función me permite tomar una carta
+    const pedirCarta = () => {
+
+        if ( deck.length === 0 ) {
+            throw 'No hay cartas en el deck';
+        }
+        const carta = deck.pop();
+        return carta;
+    }
+
+    // for ( let i = 0; i <= 100; i++ ) {
+    // }
+
+    // deck = [];
+
+    // pedirCarta();
+    const valorCarta = ( carta ) => {
+
+        const valor = carta.substring(0, carta.length - 1);
+        return ( isNaN( valor ) ) ?     // Se necesita evaluar con una nueva condicion ternaria 
+                ( valor === 'A' ) ? 11 : 10
+                : valor * 1;
+    }                   // isNaN = is not a number (Evalua lo que esta en el parentisis y dice si es un numero o no retonrna un boolean )
+
+
+    // turno de la computadora
+    const turnoComputadora = ( puntosMinimos ) => {
+
+        do {
+            const carta = pedirCarta();
+
+            puntosComputadora = puntosComputadora + valorCarta( carta );
+            puntosHTML[1].innerText = puntosComputadora;
+            
+            // <img class="carta" src="assets/cartas/2C.png">
+            const imgCarta = document.createElement('img');
+            imgCarta.src = `assets/cartas/${ carta }.png`; //3H, JD
+            imgCarta.classList.add('carta');
+            divCartasComputadora.append( imgCarta );
+
+            if( puntosMinimos > 21 ) {
+                break;
+            }
+
+        } while(  (puntosComputadora < puntosMinimos)  && (puntosMinimos <= 21 ) );
+
+        setTimeout(() => {
+            if( puntosComputadora === puntosMinimos ) {
+                alert('Nadie gana :(');
+            } else if ( puntosMinimos > 21 ) {
+                alert('Computadora gana')
+            } else if( puntosComputadora > 21 ) {
+                alert('Jugador Gana');
+            } else {
+                alert('Computadora Gana')
+            }
+        }, 100 );
+    }
+
+    //Eventos
+                // callback, Es una funcion que se esta mandando como argumento
+                // puede ser un funcion tradicional o una de flecha
+    btnPedir.addEventListener('click', () => {
+
+        const carta = pedirCarta();
+        
+        puntosJugador = puntosJugador + valorCarta( carta );
+        puntosHTML[0].innerText = puntosJugador;
+        
+        // <img class="carta" src="assets/cartas/2C.png">
+        const imgCarta = document.createElement('img'); //Creacion de la carta con el img pero esta en memoria 
+        imgCarta.src = `assets/cartas/${ carta }.png`; // le estamos agregando el src de la imagen; 3D, 5D
+        imgCarta.classList.add('carta');              //Agregamos el estilo 
+        divCartasJugador.append( imgCarta );        // aqui ya estoy agregando la carta como tal  
+
+        if ( puntosJugador > 21 ) {             //condicion para saber si ya perdio o si gano y poder detener el juego 
+            console.warn('Lo siento mucho, perdiste');
+            btnPedir.disabled   = true;     //COn esta instrucccion bloqueamos el boton btnpedir
+            btnDetener.disabled = true;
+            turnoComputadora( puntosJugador );
+
+        } else if ( puntosJugador === 21 ) {
+            console.warn('21, genial!');
+            btnPedir.disabled   = true;
+            btnDetener.disabled = true;
+            turnoComputadora( puntosJugador );
+        }
+
+    });
+
+    btnDetener.addEventListener('click', () => {
+        btnPedir.disabled   = true;
+        btnDetener.disabled = true;
+
+        turnoComputadora( puntosJugador );
+    });
+
+
+
+    btnNuevo.addEventListener('click', () => {
+
+        console.clear();         //Limpiar la consola
+        deck = [];           //Limpiar el deck a la fuerza 
+        deck = crearDeck(); //barajea el deck esta funcion
+
+        puntosJugador     = 0;      //Seteamos lo valores en 0
+        puntosComputadora = 0;      //Seteamos lo valores en 0
+        
+        puntosHTML[0].innerText = 0;    //Esto es un listado       //Seteamos lo valores en 0
+        puntosHTML[1].innerText = 0;    //Esto es un listado       //Seteamos lo valores en 0
+
+        divCartasComputadora.innerHTML = '';        //Con este borramos las cartas computadora
+        divCartasJugador.innerHTML = '';        //Con este borramos las cartas Jugador
+
+        btnPedir.disabled   = false;        //Se habilitan de nuevo los botones
+        btnDetener.disabled = false;
+
+    });
+
+})();
+
+
